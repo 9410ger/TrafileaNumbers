@@ -11,7 +11,11 @@ class NumberTrafileaServiceImpl(
     private val numberTrafileaRepository: NumberTrafileaRepository
 ): NumberTrafileaService {
     override fun save(number: Long): NumberTrafilea {
-        return numberTrafileaRepository.save(getTypeNumber(number))
+        return try{
+            getByNumber(number)
+        }catch (ex: NumberTrafileaNotFoundException){
+            numberTrafileaRepository.save(getTypeNumber(number))
+        }
     }
 
     override fun getByNumber(number: Long): NumberTrafilea {
